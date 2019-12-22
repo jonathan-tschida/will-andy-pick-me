@@ -28,15 +28,33 @@ var clearButton = document.querySelector('#clear-button');
 
 answerBox.remove();
 
+questionInput.addEventListener('input', enableAnswerButton);
 answerButton.addEventListener('click', answerQuestion);
+clearButton.addEventListener('click', clearAnswer);
+
+function enableAnswerButton() {
+  if (questionInput.value != '') {
+    answerButton.disabled = false;
+  } else {
+    answerButton.disabled = true;
+  }
+}
 
 function answerQuestion() {
   var randomNum = Math.floor(Math.random() * listOfAnswers.length);
   var newQuestion = questionInput.value;
   var newAnswer = listOfAnswers[randomNum];
-  questionInput.innerText = '';
+  questionInput.value = '';
+  answerButton.disabled = true;
   question.innerText = `"${newQuestion}"`;
   answer.innerText = newAnswer;
   eightBall.remove();
   questionInput.parentNode.insertBefore(answerBox, clearButton);
+  clearButton.disabled = false;
+}
+
+function clearAnswer() {
+  answerBox.remove();
+  questionInput.parentNode.insertBefore(eightBall, clearButton);
+  clearButton.disabled = true;
 }
